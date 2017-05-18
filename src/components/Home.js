@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import SideLinks from './SideLinks';
 import Ads from './Ads';
 
