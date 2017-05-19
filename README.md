@@ -1,5 +1,6 @@
-Prototype for React apps
+Springboard for React apps
 =====================================
+Simple React app to explore the use of routes, modularized components, and consumption of various endpoints of a RESTful API
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
@@ -12,6 +13,9 @@ This is a boilerplate app that I started using the new create-react-app NPM modu
 * Added "proxy": "http://localhost:3001" to the end of the package.json file as a base endpoint reference to a REST API.
 * Added Login.js and Register.js to gain familiarity with JSX form processing and using fetch to do HTTP POST requests to a a REST endpoint. 
 * I built https://djohnsonkc-identity-provider.herokuapp.com as a homegrown, RESTful, JWT-based identity provider solution, which persists data to MongoDB
+* Use of Flux for state management
+
+https://facebook.github.io/flux/docs/in-depth-overview.html#content
 
 
 
@@ -22,7 +26,7 @@ This is some great information on how to deploy to Heroku.
 https://blog.heroku.com/deploying-react-with-zero-configuration
 
 
-###Inspiration
+### Inspiration
 
 http://stackoverflow.com/questions/43776887/react-router-v4-separating-link-and-route-path-elements
 
