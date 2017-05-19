@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import SideLinks from './SideLinks';
 import Ads from './Ads';
 
-class Account extends Component {
+class Account extends React.Component {
 
 
   state = { user: {} }
