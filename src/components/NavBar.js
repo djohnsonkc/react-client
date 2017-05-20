@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
+
 class NavBar extends React.Component {
 
+// function UserGreeting(props) {
+//   return Welcome, {this.props.email}!;
+// }
+
+// function GuestGreeting(props) {
+//   return <Link to="/login"><span className="glyphicon glyphicon-log-in"></span> Login {this.props.firstName}</Link>;
+// }
   render() {
     return (
     	<div>
@@ -24,7 +33,12 @@ class NavBar extends React.Component {
 			        <li><Link to="/account">Account</Link></li>
 			      </ul>
 			      <ul className="nav navbar-nav navbar-right">
-			        <li><Link to="/login"><span className="glyphicon glyphicon-log-in"></span> Login {this.props.firstName}</Link></li>
+			      	{!this.props.isLoggedIn ? (
+			        	<li><Link to="/login"><span className="glyphicon glyphicon-log-in"></span> Login</Link></li>
+			      	) : (
+			      		<li><Link to="/logout"><span className="glyphicon glyphicon-log-out"></span>Welcome, {this.props.email}!</Link></li>
+			      	)}
+
 			      </ul>
 			    </div>
 			  </div>

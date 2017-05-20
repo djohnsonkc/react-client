@@ -35,20 +35,42 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: 'djohnsonkc',
+      email: '',
       password: '',
       firstName: '',
-      auth: null
+      isLoggedIn: false,
+      auth: {
+        access_token: null,
+        expires_in: null
+      }
     };
 
+    // set these up so that Login.js can pass things back up
+    this.handleEmail = this.handleEmail.bind(this);
+    this.handlePassword = this.handlePassword.bind(this);
     this.handleAuth = this.handleAuth.bind(this);
 
   }
 
+  //******************************************************************
+  // handlers that are passed into Login.js
+  //******************************************************************
+  handleEmail = (evt) => {
+    console.log("email change: " + evt.target.value)
+    this.setState({ email: evt.target.value });
+  }
+
+  handlePassword = (evt) => {
+    console.log("password change: " + evt.target.value)
+    this.setState({ password: evt.target.value });
+  }
+
   handleAuth(results) {
     this.setState({
+      email: results.email,
       firstName: results.first_name,
-      auth: results.access_token
+      isLoggedIn: results.isLoggedIn,
+      auth: results.auth
     });
   }
 
@@ -59,16 +81,20 @@ class App extends Component {
 
       <Router>
         <div>
-          <NavBar firstName={this.state.firstName} />
+          <NavBar isLoggedIn={this.state.isLoggedIn} email={this.state.email} />
           
           <div>
             <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />
-            <Route path="/account" component={Account} />
+            <Route path="/account" render={()=>
+              <Account all={this.state} isLoggedIn={this.state.isLoggedIn} email={this.state.email} firstName={this.state.firstName} />}
+            />
             <PropsRoute path="/login" 
               component={Login} 
-              userName={this.state.userName} 
+              email={this.state.email} 
               password={this.state.password} 
+              onEmailChange={this.handleEmail} 
+              onPasswordChange={this.handlePassword} 
               onAuthChange={this.handleAuth} />
           </div>
 

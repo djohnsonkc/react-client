@@ -4,46 +4,48 @@ class Login extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			user_name: 'djohnsonkc',
-			password: '1234',
-			auth: null
-		};
-		// use this handler as a wrapper to this.props.onAuthChange(results)
+
+		// use these handlers as a wrapper to this.props.onAuthChange(results), etc.
+		this.handleEmailChange = this.handleEmailChange.bind(this);
+    	this.handlePasswordChange = this.handlePasswordChange.bind(this);
 		this.handleAuthChange = this.handleAuthChange.bind(this);
 	}
 
+	//******************************************************************
 	// this will pass results back up to App.js
+	//******************************************************************
 	handleAuthChange = (results) => {
 		this.props.onAuthChange(results);
 	}
 
-	handleUserNameChange = (evt) => {
-		this.setState({ user_name: evt.target.value });
+	handleEmailChange = (evt) => {
+		this.props.onEmailChange(evt);
 	}
 
 	handlePasswordChange = (evt) => {
-		this.setState({ password: evt.target.value });
+		this.props.onPasswordChange(evt);
 	}
 
+	//******************************************************************
+	// handles the form submission
+	//******************************************************************
 	handleSubmit = (evt) => {
 		evt.preventDefault();
-		//alert('Signed in as: ${this.state.user_name}');
 		this.postLoginRequest()
 	}
 
 
 
   	postLoginRequest = () => {
-		fetch('https://djohnsonkc-identity-provider.herokuapp.com/api/v1/accounts/' + this.state.user_name, {  
+		fetch('https://djohnsonkc-identity-provider.herokuapp.com/api/v1/accounts/' + this.props.email, {  
 		  method: 'POST',
 		  headers: {
 		    'Accept': 'application/json',
 		    'Content-Type': 'application/json',
 		  },
 		  body: JSON.stringify({
-		    user_name: this.state.user_name,
-		    password: this.state.password,
+		    email: this.props.email,
+		    password: this.props.password,
 		  })
 		})
 		.then(this.handleErrors)
@@ -65,15 +67,23 @@ class Login extends React.Component {
 	}
 
 	onLoginResult = (result) => {
-		console.log(JSON.stringify(result, null, 2))
-		console.log('setting local storage...' + result.access_token)
+		//console.log(JSON.stringify(result, null, 2))
+		//console.log('setting local storage...' + result.access_token)
 		localStorage.setItem('x-access-token', result.access_token);
 		this.setState({ auth: {
 			access_token: result.access_token,
 			expires: result.expires_in
 		} });
 
-		this.handleAuthChange({ first_name: 'Dywayne', access_token: result.access_token })
+		this.handleAuthChange({ 
+			email: this.props.email,
+			first_name: '', 
+			isLoggedIn: true,
+			auth: {
+				access_token: result.access_token,
+				expires_in: result.expires_in
+			}
+		})
 
 		this.props.history.push('/account');
 
@@ -91,15 +101,15 @@ class Login extends React.Component {
 						<div className="col-sm-4 col-sm-offset-4">
 
 							<div className="text-center">
-								<h1>Login {this.props.testProp}</h1>
+								<h1>Login</h1>
 							</div>
 
 							<form onSubmit={this.handleSubmit}>
 								<div className="form-group">
-									<input type="text" name="username" id="username" tabIndex="1" className="form-control" placeholder="Username"  value={this.state.user_name} onChange={this.handleUserNameChange} />
+									<input type="text" name="email" id="email" tabIndex="1" className="form-control" placeholder="Email address"  value={this.props.email} onChange={this.handleEmailChange} />
 								</div>
 								<div className="form-group">
-									<input type="password" name="password" id="password" tabIndex="2" className="form-control" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange} />
+									<input type="password" name="password" id="password" tabIndex="2" className="form-control" placeholder="Password" value={this.props.password} onChange={this.handlePasswordChange} />
 								</div>
 								<div className="form-group text-center">
 									<input type="checkbox" tabIndex="3" className="" name="remember" id="remember" />

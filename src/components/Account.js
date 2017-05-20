@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SideLinks from './SideLinks';
 import Ads from './Ads';
 
 class Account extends React.Component {
 
 
-  state = { user: {} }
+  // state = { user: {} }
 
   // componentDidMount() {
   //   fetch('/api/accounts')
@@ -38,11 +39,18 @@ class Account extends React.Component {
             <SideLinks/>
             <div className="col-sm-8 text-left"> 
               <h1>Account Info</h1>
-              <p>This is where your account information will display if logged in.</p>
 
-              {
-                <p key={this.state.user.id}>{this.state.user.user_name}, {this.state.user.first_name}</p>
-              }
+
+              {!this.props.all.isLoggedIn ? (
+                <div>
+                  <p>Please login to view your account info</p>
+                  <p><Link to="/login"><span className="glyphicon glyphicon-log-in"></span> Login</Link></p>
+                </div>
+              ) : (
+                <p>Welcome, {this.props.all.email}! <Link to="/logout"><span className="glyphicon glyphicon-log-out"></span>Logout</Link></p>
+              )}
+
+
 
             </div>
             <Ads/>
