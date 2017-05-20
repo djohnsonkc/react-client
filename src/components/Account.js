@@ -7,11 +7,11 @@ class Account extends React.Component {
 
   state = { user: {} }
 
-  componentDidMount() {
-    fetch('/api/accounts')
-      .then(res => res.json())
-      .then(user => this.setState({ user }));
-  }
+  // componentDidMount() {
+  //   fetch('/api/accounts')
+  //     .then(res => res.json())
+  //     .then(user => this.setState({ user }));
+  // }
 
 
   /*

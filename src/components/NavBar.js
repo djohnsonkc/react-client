@@ -24,7 +24,7 @@ class NavBar extends React.Component {
 			        <li><Link to="/account">Account</Link></li>
 			      </ul>
 			      <ul className="nav navbar-nav navbar-right">
-			        <li><Link to="/login"><span className="glyphicon glyphicon-log-in"></span> Login</Link></li>
+			        <li><Link to="/login"><span className="glyphicon glyphicon-log-in"></span> Login {this.props.firstName}</Link></li>
 			      </ul>
 			    </div>
 			  </div>

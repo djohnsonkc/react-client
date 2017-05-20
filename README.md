@@ -13,9 +13,9 @@ This is a boilerplate app that I started using the new create-react-app NPM modu
 * Added "proxy": "http://localhost:3001" to the end of the package.json file as a base endpoint reference to a REST API.
 * Added Login.js and Register.js to gain familiarity with JSX form processing and using fetch to do HTTP POST requests to a a REST endpoint. 
 * I built https://djohnsonkc-identity-provider.herokuapp.com as a homegrown, RESTful, JWT-based identity provider solution, which persists data to MongoDB
-* Use of Flux for state management
+* Added some logic to App.js to allow a custom PropsRoute component to be used when a route needs to receive the state or props (variables or callback functions)
 
-https://facebook.github.io/flux/docs/in-depth-overview.html#content
+
 
 
 

@@ -2,13 +2,20 @@ import React from 'react';
 
 class Login extends React.Component {
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			user_name: 'djohnsonkc',
 			password: '1234',
 			auth: null
 		};
+		// use this handler as a wrapper to this.props.onAuthChange(results)
+		this.handleAuthChange = this.handleAuthChange.bind(this);
+	}
+
+	// this will pass results back up to App.js
+	handleAuthChange = (results) => {
+		this.props.onAuthChange(results);
 	}
 
 	handleUserNameChange = (evt) => {
@@ -24,6 +31,7 @@ class Login extends React.Component {
 		//alert('Signed in as: ${this.state.user_name}');
 		this.postLoginRequest()
 	}
+
 
 
   	postLoginRequest = () => {
@@ -65,6 +73,8 @@ class Login extends React.Component {
 			expires: result.expires_in
 		} });
 
+		this.handleAuthChange({ first_name: 'Dywayne', access_token: result.access_token })
+
 		this.props.history.push('/account');
 
 	}
@@ -81,7 +91,7 @@ class Login extends React.Component {
 						<div className="col-sm-4 col-sm-offset-4">
 
 							<div className="text-center">
-								<h1>Login</h1>
+								<h1>Login {this.props.testProp}</h1>
 							</div>
 
 							<form onSubmit={this.handleSubmit}>

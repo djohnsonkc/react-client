@@ -10,23 +10,68 @@ import Login from './components/Login';
 
 import './index.css';
 
+//**********************************************************
+// use these functions to be able to pass props to routes
+//**********************************************************
+const renderMergedProps = (component, ...rest) => {
+  const finalProps = Object.assign({}, ...rest);
+  return (
+    React.createElement(component, finalProps)
+  );
+}
 
-const Routes = () => (
-  <div>
-    <Route exact path="/" component={Home} />
-    <Route path="/about" component={About} />
-    <Route path="/account" component={Account} />
-    <Route path="/login" component={Login} />
-  </div>
-);
+const PropsRoute = ({ component, ...rest }) => {
+  return (
+    <Route {...rest} render={routeProps => {
+      return renderMergedProps(component, routeProps, rest);
+    }}/>
+  );
+}
 
+
+//**********************************************************
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: 'djohnsonkc',
+      password: '',
+      firstName: '',
+      auth: null
+    };
+
+    this.handleAuth = this.handleAuth.bind(this);
+
+  }
+
+  handleAuth(results) {
+    this.setState({
+      firstName: results.first_name,
+      auth: results.access_token
+    });
+  }
+
+
   render() {
     return (
+
+
       <Router>
         <div>
-          <NavBar />
-          <Routes />
+          <NavBar firstName={this.state.firstName} />
+          
+          <div>
+            <Route exact path="/" component={Home} />
+            <Route path="/about" component={About} />
+            <Route path="/account" component={Account} />
+            <PropsRoute path="/login" 
+              component={Login} 
+              userName={this.state.userName} 
+              password={this.state.password} 
+              onAuthChange={this.handleAuth} />
+          </div>
+
           <Footer />
         </div>
       </Router>
