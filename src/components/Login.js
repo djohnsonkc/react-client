@@ -2,6 +2,8 @@ import React from 'react';
 
 class Login extends React.Component {
 
+
+
 	constructor(props) {
 		super(props);
 
@@ -37,20 +39,38 @@ class Login extends React.Component {
 
 
   	postLoginRequest = () => {
-		fetch('https://djohnsonkc-identity-provider.herokuapp.com/api/v1/accounts/' + this.props.email, {  
+		fetch('https://djohnsonkc-identity-provider.herokuapp.com/api/v1/accounts/' + this.props.user.email, {  
 		  method: 'POST',
 		  headers: {
 		    'Accept': 'application/json',
 		    'Content-Type': 'application/json',
 		  },
 		  body: JSON.stringify({
-		    email: this.props.email,
-		    password: this.props.password,
+		    email: this.props.user.email,
+		    password: this.props.user.password,
 		  })
 		})
 		.then(this.handleErrors)
 		.then(response => response.json())
       	.then(result => this.onLoginResult(result))
+      	.catch(function(error) {
+      		// catch errors thrown by handleErrors
+	        console.log("catch caught an error: " + error);
+	    });
+
+  	}
+
+  	getAccountDetailsRequest = (access_token) => {
+		fetch('https://djohnsonkc-identity-provider.herokuapp.com/api/v1/accounts', {  
+		  method: 'GET',
+		  headers: {
+		    'x-access-token': access_token,
+		    'Content-Type': 'application/json',
+		  }
+		})
+		.then(this.handleErrors)
+		.then(response => response.json())
+      	.then(result => this.onAccountDetailsResult(result))
       	.catch(function(error) {
       		// catch errors thrown by handleErrors
 	        console.log("catch caught an error: " + error);
@@ -75,9 +95,20 @@ class Login extends React.Component {
 			expires: result.expires_in
 		} });
 
+		// use the access_token to make another request for the account details
+		this.getAccountDetailsRequest(result.access_token)
+
+	}
+
+
+
+	onAccountDetailsResult = (result) => {
+		//console.log(JSON.stringify(result, null, 2))
+
 		this.handleAuthChange({ 
-			email: this.props.email,
-			first_name: '', 
+			email: this.props.user.email,
+			first_name: result.first_name,
+			last_name: result.last_name,
 			isLoggedIn: true,
 			auth: {
 				access_token: result.access_token,
@@ -106,10 +137,10 @@ class Login extends React.Component {
 
 							<form onSubmit={this.handleSubmit}>
 								<div className="form-group">
-									<input type="text" name="email" id="email" tabIndex="1" className="form-control" placeholder="Email address"  value={this.props.email} onChange={this.handleEmailChange} />
+									<input type="text" name="email" id="email" tabIndex="1" className="form-control" placeholder="Email address"  value={this.props.user.email} onChange={this.handleEmailChange} />
 								</div>
 								<div className="form-group">
-									<input type="password" name="password" id="password" tabIndex="2" className="form-control" placeholder="Password" value={this.props.password} onChange={this.handlePasswordChange} />
+									<input type="password" name="password" id="password" tabIndex="2" className="form-control" placeholder="Password" value={this.props.user.password} onChange={this.handlePasswordChange} />
 								</div>
 								<div className="form-group text-center">
 									<input type="checkbox" tabIndex="3" className="" name="remember" id="remember" />

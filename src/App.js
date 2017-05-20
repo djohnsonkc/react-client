@@ -37,7 +37,8 @@ class App extends Component {
     this.state = {
       email: '',
       password: '',
-      firstName: '',
+      first_name: '',
+      last_name: '',
       isLoggedIn: false,
       auth: {
         access_token: null,
@@ -68,7 +69,7 @@ class App extends Component {
   handleAuth(results) {
     this.setState({
       email: results.email,
-      firstName: results.first_name,
+      first_name: results.first_name,
       isLoggedIn: results.isLoggedIn,
       auth: results.auth
     });
@@ -81,18 +82,17 @@ class App extends Component {
 
       <Router>
         <div>
-          <NavBar isLoggedIn={this.state.isLoggedIn} email={this.state.email} />
+          <NavBar user={this.state} />
           
           <div>
             <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />
             <Route path="/account" render={()=>
-              <Account all={this.state} isLoggedIn={this.state.isLoggedIn} email={this.state.email} firstName={this.state.firstName} />}
+              <Account user={this.state} />}
             />
             <PropsRoute path="/login" 
               component={Login} 
-              email={this.state.email} 
-              password={this.state.password} 
+              user={this.state} 
               onEmailChange={this.handleEmail} 
               onPasswordChange={this.handlePassword} 
               onAuthChange={this.handleAuth} />

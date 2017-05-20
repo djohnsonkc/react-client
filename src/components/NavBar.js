@@ -33,10 +33,10 @@ class NavBar extends React.Component {
 			        <li><Link to="/account">Account</Link></li>
 			      </ul>
 			      <ul className="nav navbar-nav navbar-right">
-			      	{!this.props.isLoggedIn ? (
+			      	{!this.props.user.isLoggedIn ? (
 			        	<li><Link to="/login"><span className="glyphicon glyphicon-log-in"></span> Login</Link></li>
 			      	) : (
-			      		<li><Link to="/logout"><span className="glyphicon glyphicon-log-out"></span>Welcome, {this.props.email}!</Link></li>
+			      		<li><Link to="/logout"><span className="glyphicon glyphicon-log-out"></span>Welcome, {this.props.user.first_name}!</Link></li>
 			      	)}
 
 			      </ul>

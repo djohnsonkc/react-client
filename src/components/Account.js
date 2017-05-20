@@ -6,29 +6,35 @@ import Ads from './Ads';
 class Account extends React.Component {
 
 
-  // state = { user: {} }
-
-  // componentDidMount() {
-  //   fetch('/api/accounts')
-  //     .then(res => res.json())
-  //     .then(user => this.setState({ user }));
-  // }
-
-
-  /*
-
-  state = {users: []}
-
   componentDidMount() {
-    fetch('/api/users')
-      .then(res => res.json())
-      .then(users => this.setState({ users }));
+    fetch('https://djohnsonkc-identity-provider.herokuapp.com/api/v1/accounts', {  
+      method: 'GET',
+      headers: {
+        'x-access-token': localStorage.getItem('x-access-token'),
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(this.handleErrors)
+    .then(response => response.json())
+    .then(result => this.onAccountDetailsResult(result))
+    .catch(function(error) {
+        // catch errors thrown by handleErrors
+        console.log("catch caught an error: " + error);
+    });
   }
 
-              {this.state.users.map(user =>
-                <p key={user.id}>{user.username}</p>
-              )}
-  */
+  handleErrors = (response) => {
+      if (!response.ok) {
+        // throw an error that will be caught by fetch.catch 
+          throw Error(response.statusText);
+      }
+      return response;
+  }
+
+  onAccountDetailsResult = (result) => {
+    console.log("account page: " + JSON.stringify(result, null, 2))
+
+  }
 
   render() {
     return (
@@ -41,13 +47,13 @@ class Account extends React.Component {
               <h1>Account Info</h1>
 
 
-              {!this.props.all.isLoggedIn ? (
+              {!this.props.user.isLoggedIn ? (
                 <div>
                   <p>Please login to view your account info</p>
                   <p><Link to="/login"><span className="glyphicon glyphicon-log-in"></span> Login</Link></p>
                 </div>
               ) : (
-                <p>Welcome, {this.props.all.email}! <Link to="/logout"><span className="glyphicon glyphicon-log-out"></span>Logout</Link></p>
+                <p>Welcome, {this.props.user.first_name}! <Link to="/logout"><span className="glyphicon glyphicon-log-out"></span>Logout</Link></p>
               )}
 
 
